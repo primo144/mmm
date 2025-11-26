@@ -19,7 +19,7 @@ const Index = () => {
             {/* Contenedor de Botones */}
             <div className="d-flex flex-column gap-3 w-100" style={{ maxWidth: "500px" }}>
                 
-                {/* 1. Botón Principal: Simulador */}
+                {/*Botón Principal: Simulador */}
                 <button 
                     className="btn btn-primary btn-lg p-3 rounded-4 shadow-sm d-flex justify-content-between align-items-center"
                     onClick={() => navigate("/simulador")}
@@ -28,7 +28,7 @@ const Index = () => {
                     <span>→</span>
                 </button>
 
-                {/* 2. Fila de Botones: Herramientas y Acceso */}
+                {/*Fila de Botones: Herramientas y Acceso */}
                 <div className="row g-2">
                     <div className="col-6">
                         <button 
@@ -42,7 +42,7 @@ const Index = () => {
                     <div className="col-6">
                         <button 
                             className="btn btn-light w-100 p-3 rounded-4 border h-100 d-flex flex-column align-items-center justify-content-center gap-2"
-                            onClick={() => navigate("/iniciar-sesion")}
+                            onClick={() => navigate("/login")}
                         >
                             <span style={{ fontSize: "1.5rem" }}>👤</span>
                             <span>Acceso Clientes</span>
@@ -50,7 +50,7 @@ const Index = () => {
                     </div>
                 </div>
 
-                {/* 3. Botón Nuevo: Verdadero About */}
+                {/* 3. Botón */}
                 <button 
                     className="btn btn-outline-secondary w-100 p-2 rounded-4 border d-flex align-items-center justify-content-center gap-2"
                     onClick={() => navigate("/about")}

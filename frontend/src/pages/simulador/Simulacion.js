@@ -7,8 +7,9 @@ import FormContainer from "components/containers/FormContainer";
 import BtnsContainer from "components/containers/BtnsContainer";
 import FillContainer from "components/containers/FillContainer";
 import PrevStepBtn from "components/subComponents/PrevStepBtn";
+import { useAuth } from "context/authContext";
 
-// Importamos el formateador "Bonito" para mostrar precios (CLP X.XXX.XXX)
+
 import { formatearDineroNumber, formatearDineroStrBonito } from "utils/formatoDinero";
 import { handleData } from "utils/handlers";
 
@@ -17,6 +18,7 @@ const Simulacion = () => {
     const { formData, prevStep } = useOutletContext();
     const [dataFetch, setDataFetch] = useState(null);
     const [error, setError] = useState(null);
+    const { user, isAuthenticated } = useAuth();
 
     const getSimulacion = async (data) => {
         try {
@@ -54,7 +56,7 @@ const Simulacion = () => {
         fetchData();
     }, [formData, navigate]);
 
-    // Componente de Tarjeta para mostrar datos clave
+    
     const InfoCard = ({ title, value, highlight = false }) => (
         <div className={`card mb-3 ${highlight ? 'border-primary' : ''} shadow-sm`}>
             <div className={`card-header ${highlight ? 'bg-primary text-white' : 'bg-light'}`}>
@@ -65,6 +67,28 @@ const Simulacion = () => {
             </div>
         </div>
     );
+    const handleGuardar = async () => {
+        if (!dataFetch) return;
+        try {
+            const res = await fetch(backendUrl + "/api/simulacion/guardar", {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}` // <--- Enviar Token
+                },
+                body: JSON.stringify({
+                    monto: dataFetch.monto,
+                    plazo: dataFetch.solicitud.plazo,
+                    cuotaMensual: dataFetch.cuotaMensual,
+                    cae: dataFetch.CAE
+                })
+            });
+            if (res.ok) alert("¡Simulación guardada con éxito!");
+            else alert("Error al guardar");
+        } catch (err) {
+            alert("Error de conexión");
+        }
+    }
 
     return (
         <FormContainer>
@@ -132,6 +156,11 @@ const Simulacion = () => {
             </div>
 
             <BtnsContainer>
+                {isAuthenticated && (
+                    <button className="btn btn-success btn-top" onClick={handleGuardar}>
+                        Guardar Simulación
+                    </button>
+                )}
                 <button className="btn btn-primary btn-top">
                     Solicitar este crédito →
                 </button>

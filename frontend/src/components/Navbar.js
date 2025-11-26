@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "context/authContext";
 
 const Navbar = () => {
     const location = useLocation();
+    const { isAuthenticated, logout } = useAuth();
 
-    // Función auxiliar para saber si el link está activo
+    
     const isActive = (path) => location.pathname === path ? "active fw-bold" : "";
 
     return (
@@ -33,6 +35,15 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className={`nav-link ${isActive("/simulador")}`} to="/simulador">Simulador</Link>
                         </li>
+                        
+                        {}
+                        {isAuthenticated && (
+                            <li className="nav-item">
+                                <Link className={`nav-link ${isActive("/historial")}`} to="/historial">Historial</Link>
+                            </li>
+                        )}
+                        {/* ----------------------------------------------------------------- */}
+
                         <li className="nav-item">
                             <Link className={`nav-link ${isActive("/escanear")}`} to="/escanear">Herramienta OCR</Link>
                         </li>
@@ -42,16 +53,29 @@ const Navbar = () => {
                     </ul>
                     
                     <ul className="navbar-nav gap-2">
-                        <li className="nav-item">
-                            <Link className="btn btn-outline-primary btn-sm rounded-pill px-3" to="/iniciar-sesion">
-                                Iniciar Sesión
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="btn btn-primary btn-sm rounded-pill px-3" to="/crear-cuenta">
-                                Crear Cuenta
-                            </Link>
-                        </li>
+                        {isAuthenticated ? (
+                            <li className="nav-item">
+                                <button 
+                                    className="btn btn-outline-danger btn-sm rounded-pill px-3" 
+                                    onClick={logout}
+                                >
+                                    Cerrar Sesión
+                                </button>
+                            </li>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="btn btn-outline-primary btn-sm rounded-pill px-3" to="/login">
+                                        Iniciar Sesión
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="btn btn-primary btn-sm rounded-pill px-3" to="/crear-cuenta">
+                                        Crear Cuenta
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>
